@@ -1,4 +1,4 @@
-// Copyright 2016 The Prometheus Authors
+// Copyright The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -16,6 +16,7 @@ package kubernetes
 import (
 	"context"
 	"fmt"
+	"maps"
 	"testing"
 
 	"github.com/prometheus/common/model"
@@ -437,9 +438,7 @@ func TestPodDiscoveryNamespaces(t *testing.T) {
 	n, c := makeDiscovery(RolePod, NamespaceDiscovery{Names: []string{"ns1", "ns2"}})
 
 	expected := expectedPodTargetGroups("ns1")
-	for k, v := range expectedPodTargetGroups("ns2") {
-		expected[k] = v
-	}
+	maps.Copy(expected, expectedPodTargetGroups("ns2"))
 	k8sDiscoveryTest{
 		discovery: n,
 		beforeRun: func() {

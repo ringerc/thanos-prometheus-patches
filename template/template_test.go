@@ -1,4 +1,4 @@
-// Copyright 2014 The Prometheus Authors
+// Copyright The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -590,7 +590,7 @@ func TestTemplateExpansion(t *testing.T) {
 type scenario struct {
 	text        string
 	output      string
-	input       interface{}
+	input       any
 	options     []string
 	queryResult promql.Vector
 	shouldFail  bool
@@ -605,7 +605,7 @@ func testTemplateExpansion(t *testing.T, scenarios []scenario) {
 	}
 
 	for _, s := range scenarios {
-		queryFunc := func(_ context.Context, _ string, _ time.Time) (promql.Vector, error) {
+		queryFunc := func(context.Context, string, time.Time) (promql.Vector, error) {
 			return s.queryResult, nil
 		}
 		var result string
